@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "nodemon --exec bun src/index.ts",
-    "build": "bun build src/index.ts --outdir dist --target node",
-    "start": "npx prisma generate && bun run dist/index.js",
+    "build": "npx prisma generate && bun build src/index.ts --outdir dist --target node",
+    "start": "bun run dist/index.js",
     "lint": "eslint .",
     "check-types": "tsc --noEmit"
   },
