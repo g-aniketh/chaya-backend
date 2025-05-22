@@ -7,6 +7,10 @@
     "dev": "nodemon --exec bun src/index.ts",
     "build": "npx prisma generate && bun build src/index.ts --outdir dist --target node",
     "start": "bun run dist/index.js",
+    "db:generate": "echo 'Running prisma generate' && prisma generate",
+    "db:seed": "bun run ./seed.ts",
+    "db:migrate": "prisma migrate dev",
+    "db:reset": "prisma migrate reset",
     "lint": "eslint .",
     "check-types": "tsc --noEmit"
   },
