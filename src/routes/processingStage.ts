@@ -1,11 +1,11 @@
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import {
   prisma,
-  ProcessingStageStatus,
   createProcessingStageSchema,
   finalizeProcessingStageSchema,
   createDryingEntrySchema,
 } from "@ankeny/chaya-prisma-package";
+import { ProcessingStageStatus } from "@prisma/client";
 import { authenticate, type AuthenticatedRequest } from "../middlewares/auth";
 import redisClient from "../lib/upstash-redis";
 
@@ -92,7 +92,7 @@ async function processingStageRoutes(fastify: FastifyInstance) {
         }
 
         const soldFromLatestStage = latestStageFromBatch.sales.reduce(
-          (sum, sale) => sum + sale.quantitySold,
+          (sum: any, sale: any) => sum + sale.quantitySold,
           0,
         );
         const netYieldFromPreviousStage =

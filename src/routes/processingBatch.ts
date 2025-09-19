@@ -2,10 +2,10 @@ import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import {
   prisma,
   Prisma,
-  ProcessingStageStatus as PrismaProcessingStageStatus,
   createProcessingBatchSchema,
   processingBatchQuerySchema,
 } from "@ankeny/chaya-prisma-package";
+import { ProcessingStageStatus as PrismaProcessingStageStatus } from "@prisma/client";
 import {
   authenticate,
   verifyAdmin,
@@ -63,7 +63,7 @@ async function processingBatchRoutes(fastify: FastifyInstance) {
         }
 
         const initialBatchQuantity = procurements.reduce(
-          (sum, p) => sum + p.quantity,
+          (sum: any, p: any) => sum + p.quantity,
           0,
         );
         if (initialBatchQuantity <= 0) {
@@ -87,7 +87,7 @@ async function processingBatchRoutes(fastify: FastifyInstance) {
         );
 
         const result = await prisma.$transaction(
-          async (tx) => {
+          async (tx: any) => {
             const newBatch = await tx.processingBatch.create({
               data: {
                 batchCode: uniqueProcessingBatchCode,
@@ -198,7 +198,7 @@ async function processingBatchRoutes(fastify: FastifyInstance) {
           },
         );
 
-        const transformedBatches = allCandidateBatchesFromDb.map((batch) => {
+        const transformedBatches = allCandidateBatchesFromDb.map((batch: any) => {
           const latestStage = batch.processingStages[0];
           let netAvailableFromLatestStage: number = 0;
           let statusForLatestStage: ExtendedProcessingStageStatus = "NO_STAGES";
@@ -216,7 +216,7 @@ async function processingBatchRoutes(fastify: FastifyInstance) {
               latestStage.status === PrismaProcessingStageStatus.FINISHED
             ) {
               const soldFromThisStage = latestStage.sales.reduce(
-                (sum, sale) => sum + sale.quantitySold,
+                (sum: any, sale: any) => sum + sale.quantitySold,
                 0,
               );
               netAvailableFromLatestStage =
@@ -234,7 +234,7 @@ async function processingBatchRoutes(fastify: FastifyInstance) {
           }
 
           const totalQuantitySoldFromBatchOverall = batch.sales.reduce(
-            (sum, sale) => sum + sale.quantitySold,
+            (sum: any, sale: any) => sum + sale.quantitySold,
             0,
           );
 
@@ -266,7 +266,7 @@ async function processingBatchRoutes(fastify: FastifyInstance) {
 
         const statusFilteredBatches = query.status
           ? transformedBatches.filter(
-              (b) => b.latestStageSummary?.status === query.status,
+              (b: any) => b.latestStageSummary?.status === query.status,
             )
           : transformedBatches;
 
@@ -433,7 +433,7 @@ async function processingBatchRoutes(fastify: FastifyInstance) {
             latestStageData.status === PrismaProcessingStageStatus.IN_PROGRESS
           ) {
             const latestDrying = latestStageData.dryingEntries.sort(
-              (a, b) => b.day - a.day,
+              (a: any, b: any) => b.day - a.day,
             )[0];
             netAvailableFromLatestStageQty =
               latestDrying?.currentQuantity ?? latestStageData.initialQuantity;
@@ -441,7 +441,7 @@ async function processingBatchRoutes(fastify: FastifyInstance) {
             latestStageData.status === PrismaProcessingStageStatus.FINISHED
           ) {
             const salesFromThisStage = latestStageData.sales.reduce(
-              (sum, sale) => sum + sale.quantitySold,
+              (sum: any, sale: any) => sum + sale.quantitySold,
               0,
             );
             netAvailableFromLatestStageQty =
@@ -465,7 +465,7 @@ async function processingBatchRoutes(fastify: FastifyInstance) {
             initialQuantity: latestStageData.initialQuantity,
             quantityAfterProcess: latestStageData.quantityAfterProcess,
             lastDryingQuantity:
-              latestStageData.dryingEntries.sort((a, b) => b.day - a.day)[0]
+              latestStageData.dryingEntries.sort((a: any, b: any) => b.day - a.day)[0]
                 ?.currentQuantity ?? null,
           };
         } else {
@@ -473,7 +473,7 @@ async function processingBatchRoutes(fastify: FastifyInstance) {
         }
 
         const totalQuantitySoldFromBatchOverall = batchFromDb.sales.reduce(
-          (sum, sale) => sum + sale.quantitySold,
+          (sum: any, sale: any) => sum + sale.quantitySold,
           0,
         );
 
@@ -516,7 +516,7 @@ async function processingBatchRoutes(fastify: FastifyInstance) {
             .status(404)
             .send({ error: "Processing batch not found." });
 
-        await prisma.$transaction(async (tx) => {
+        await prisma.$transaction(async (tx: any) => {
           await tx.procurement.updateMany({
             where: { processingBatchId: id },
             data: { processingBatchId: null },

@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@ankeny/chaya-prisma-package':
-        specifier: ^1.0.5
-        version: 1.0.5(prisma@6.16.2(typescript@5.8.3))
+        specifier: ^1.0.13
+        version: 1.0.13(prisma@6.16.2(typescript@5.8.3))
       '@fastify/cookie':
         specifier: ^11.0.2
         version: 11.0.2
@@ -69,8 +69,8 @@ importers:
 
 packages:
 
-  '@ankeny/chaya-prisma-package@1.0.5':
-    resolution: {integrity: sha512-1NznHZ2l5ymGRDKFnMEqN2VZjKzcX8gdpsPriQv+ty3pRfxFSgkk5K8odmAtg1wpwQh02nz/YyPEcwxAKhbPyA==}
+  '@ankeny/chaya-prisma-package@1.0.13':
+    resolution: {integrity: sha512-+gxP+nGyz8il7yM+WLsSGlkmJXY4+Il/Oh5Ozt8KQfzVwp8x5N4iPQoQAa0pQJpfQ727VDOJ2CaTG8rN6T6krQ==}
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -821,7 +821,7 @@ packages:
 
 snapshots:
 
-  '@ankeny/chaya-prisma-package@1.0.5(prisma@6.16.2(typescript@5.8.3))':
+  '@ankeny/chaya-prisma-package@1.0.13(prisma@6.16.2(typescript@5.8.3))':
     dependencies:
       '@prisma/client': 6.16.2(prisma@6.16.2(typescript@5.8.3))(typescript@5.8.3)
       typescript: 5.8.3

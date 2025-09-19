@@ -194,7 +194,7 @@ async function farmerRoutes(fastify: FastifyInstance) {
         return reply.status(404).send({ error: "Farmer not found" });
       }
 
-      const updatedFarmer = await prisma.$transaction(async (tx) => {
+      const updatedFarmer = await prisma.$transaction(async (tx: any) => {
         const farmer = await tx.farmer.update({
           where: { id: parseInt(id) },
           data: {
@@ -405,7 +405,7 @@ async function farmerRoutes(fastify: FastifyInstance) {
           take: limit,
         });
 
-        const csvData = farmers.map((farmer) => ({
+        const csvData = farmers.map((farmer: any) => ({
           ID: farmer.id,
           SurveyNumber: farmer.surveyNumber,
           Name: farmer.name,
@@ -428,7 +428,7 @@ async function farmerRoutes(fastify: FastifyInstance) {
 
         const headers = Object.keys(csvData[0] || {}).join(",");
 
-        const rows = csvData.map((row) => {
+        const rows = csvData.map((row: any) => {
           return Object.values(row)
             .map((value) => {
               if (typeof value === "string") {
