@@ -5,7 +5,7 @@ import {
   createProcurementSchema,
   updateProcurementSchema,
   procurementQuerySchema,
-} from "@fyzanshaik/chaya-prisma-package";
+} from "@ankeny/chaya-prisma-package";
 import { generateProcurementNumber } from "../helper";
 import { Prisma } from "@prisma/client";
 import { format } from "date-fns";

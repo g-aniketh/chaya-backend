@@ -5,7 +5,7 @@ import {
   updateFarmerSchema,
   farmerQuerySchema,
   Prisma,
-} from "@fyzanshaik/chaya-prisma-package";
+} from "@ankeny/chaya-prisma-package";
 import {
   authenticate,
   verifyAdmin,

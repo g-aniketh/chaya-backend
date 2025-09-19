@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { prisma } from "@fyzanshaik/chaya-prisma-package";
+import { prisma } from "@ankeny/chaya-prisma-package";
 import redisClient from "../lib/upstash-redis";
 
 const createPing = async () => {

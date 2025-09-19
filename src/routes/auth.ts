@@ -4,7 +4,7 @@ import {
   prisma,
   loginSchema,
   registerSchema,
-} from "@fyzanshaik/chaya-prisma-package";
+} from "@ankeny/chaya-prisma-package";
 import {
   authenticate,
   verifyAdmin,

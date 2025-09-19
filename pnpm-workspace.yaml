@@ -1,0 +1,4 @@
+onlyBuiltDependencies:
+  - '@ankeny/chaya-prisma-package'
+  - '@prisma/client'
+  - prisma

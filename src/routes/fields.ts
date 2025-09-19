@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { prisma, fieldSchema } from "@fyzanshaik/chaya-prisma-package";
+import { prisma, fieldSchema } from "@ankeny/chaya-prisma-package";
 import { authenticate, verifyAdmin } from "../middlewares/auth";
 import type { AuthenticatedRequest } from "../middlewares/auth";
 

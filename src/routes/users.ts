@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { prisma, updateUserSchema } from "@fyzanshaik/chaya-prisma-package";
+import { prisma, updateUserSchema } from "@ankeny/chaya-prisma-package";
 import { verifyAdmin, type AuthenticatedRequest } from "../middlewares/auth";
 import { hashPassword } from "../lib/password";
 import redisClient from "../lib/upstash-redis";

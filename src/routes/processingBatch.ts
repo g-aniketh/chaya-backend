@@ -5,7 +5,7 @@ import {
   ProcessingStageStatus as PrismaProcessingStageStatus,
   createProcessingBatchSchema,
   processingBatchQuerySchema,
-} from "@fyzanshaik/chaya-prisma-package";
+} from "@ankeny/chaya-prisma-package";
 import {
   authenticate,
   verifyAdmin,

@@ -1,5 +1,5 @@
 import type { FastifyRequest, FastifyReply } from "fastify";
-import { prisma } from "@fyzanshaik/chaya-prisma-package";
+import { prisma } from "@ankeny/chaya-prisma-package";
 
 export interface JWTPayload {
   id: number;

@@ -1,4 +1,4 @@
-import { prisma } from "@fyzanshaik/chaya-prisma-package";
+import { prisma } from "@ankeny/chaya-prisma-package";
 import { v4 as uuidv4 } from "uuid";
 
 export async function generateSurveyNumber(): Promise<string> {

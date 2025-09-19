@@ -5,7 +5,7 @@ import {
   createProcessingStageSchema,
   finalizeProcessingStageSchema,
   createDryingEntrySchema,
-} from "@fyzanshaik/chaya-prisma-package";
+} from "@ankeny/chaya-prisma-package";
 import { authenticate, type AuthenticatedRequest } from "../middlewares/auth";
 import redisClient from "../lib/upstash-redis";
 
