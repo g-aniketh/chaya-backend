@@ -106,6 +106,12 @@ async function registerRoutes() {
   });
   fastify.register(salesRoutes, { prefix: '/api/sales' });
   fastify.register(healthRoute, { prefix: '/api/health' });
+  
+  // Add root route for Render health checks
+  fastify.get('/', async (request, reply) => {
+    return { message: 'Chaya Backend API is running', timestamp: new Date().toISOString() };
+  });
+  
   fastify.log.info('All application routes registered.');
 }
 
@@ -122,7 +128,7 @@ async function start() {
     await registerRoutes();
 
     const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 5000;
-    const host = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
+    const host = '0.0.0.0'; // Always bind to 0.0.0.0 for Render deployment
 
     fastify.log.info(`Attempting to listen on ${host}:${port}`);
     await fastify.listen({ port, host });
