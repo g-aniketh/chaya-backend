@@ -370,31 +370,6 @@ async function farmerRoutes(fastify: FastifyInstance) {
     },
   );
 
-  // DELETE /:id - Delete a single farmer
-  fastify.delete("/:id", { preHandler: verifyAdmin }, async (request, reply) => {
-    try {
-      const { id } = request.params as { id: string };
-      const farmerId = parseInt(id);
-
-      const farmer = await prisma.farmer.findUnique({
-        where: { id: farmerId },
-      });
-
-      if (!farmer) {
-        return reply.status(404).send({ error: "Farmer not found" });
-      }
-
-      await prisma.farmer.delete({
-        where: { id: farmerId },
-      });
-
-      await invalidateFarmersCache();
-      return { success: true, message: "Farmer deleted successfully" };
-    } catch (error) {
-      console.error("Delete farmer error:", error);
-      return reply.status(500).send({ error: "Failed to delete farmer" });
-    }
-  });
 
   // DELETE /bulk-delete - Delete multiple farmers
   fastify.delete("/bulk-delete", { preHandler: verifyAdmin }, async (request, reply) => {
