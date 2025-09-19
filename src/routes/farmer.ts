@@ -370,6 +370,94 @@ async function farmerRoutes(fastify: FastifyInstance) {
     },
   );
 
+  // DELETE /:id - Delete a single farmer
+  fastify.delete("/:id", { preHandler: verifyAdmin }, async (request, reply) => {
+    try {
+      const { id } = request.params as { id: string };
+      const farmerId = parseInt(id);
+
+      const farmer = await prisma.farmer.findUnique({
+        where: { id: farmerId },
+      });
+
+      if (!farmer) {
+        return reply.status(404).send({ error: "Farmer not found" });
+      }
+
+      await prisma.farmer.delete({
+        where: { id: farmerId },
+      });
+
+      await invalidateFarmersCache();
+      return { success: true, message: "Farmer deleted successfully" };
+    } catch (error) {
+      console.error("Delete farmer error:", error);
+      return reply.status(500).send({ error: "Failed to delete farmer" });
+    }
+  });
+
+  // DELETE /bulk-delete - Delete multiple farmers
+  fastify.delete("/bulk-delete", { preHandler: verifyAdmin }, async (request, reply) => {
+    try {
+      const { farmerIds } = request.body as { farmerIds: number[] };
+
+      if (!farmerIds || !Array.isArray(farmerIds) || farmerIds.length === 0) {
+        return reply.status(400).send({ error: "Invalid farmer IDs provided" });
+      }
+
+      const deleteResult = await prisma.farmer.deleteMany({
+        where: {
+          id: { in: farmerIds },
+        },
+      });
+
+      await invalidateFarmersCache();
+      return { 
+        success: true, 
+        message: `${deleteResult.count} farmers deleted successfully`,
+        deletedCount: deleteResult.count 
+      };
+    } catch (error) {
+      console.error("Bulk delete farmers error:", error);
+      return reply.status(500).send({ error: "Failed to delete farmers" });
+    }
+  });
+
+  // GET /count - Get farmer count for pagination
+  fastify.get("/count", { preHandler: authenticate }, async (request, reply) => {
+    try {
+      const query = farmerQuerySchema.parse(request.query);
+      const cacheKey = `farmers:count:${JSON.stringify(query)}`;
+      const cached = await redisClient.get(cacheKey);
+      if (cached) return { count: parseInt(cached) };
+
+      const where: Prisma.FarmerWhereInput = {
+        isActive: query.isActive,
+      };
+
+      if (query.search) {
+        where.OR = [
+          { name: { contains: query.search, mode: "insensitive" } },
+          { surveyNumber: { contains: query.search, mode: "insensitive" } },
+          { aadharNumber: { contains: query.search, mode: "insensitive" } },
+          { contactNumber: { contains: query.search, mode: "insensitive" } },
+        ];
+      }
+
+      if (query.state) where.state = query.state;
+      if (query.district) where.district = query.district;
+      if (query.gender) where.gender = query.gender;
+
+      const count = await prisma.farmer.count({ where });
+      
+      await redisClient.set(cacheKey, count.toString(), "EX", 3600);
+      return { count };
+    } catch (error) {
+      console.error("Get farmer count error:", error);
+      return reply.status(500).send({ error: "Failed to get farmer count" });
+    }
+  });
+
   fastify.get(
     "/export",
     { preHandler: authenticate },
