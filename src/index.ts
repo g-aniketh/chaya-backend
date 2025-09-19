@@ -22,8 +22,8 @@ console.log('---------------------------------');
 
 const fastify = Fastify({
   logger: {
-    level: 'debug',
-    transport: {
+    level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+    transport: process.env.NODE_ENV === 'production' ? undefined : {
       target: 'pino-pretty',
       options: {
         colorize: true,
@@ -124,6 +124,12 @@ async function start() {
     console.log(`COOKIE_SECRET is set: ${!!process.env.COOKIE_SECRET}`);
     console.log('---------------------------------');
 
+    // Add startup timeout for Render deployment
+    const startupTimeout = setTimeout(() => {
+      console.error('Server startup timeout - forcing exit');
+      process.exit(1);
+    }, 30000); // 30 seconds timeout
+
     await registerPlugins();
     await registerRoutes();
 
@@ -132,6 +138,10 @@ async function start() {
 
     fastify.log.info(`Attempting to listen on ${host}:${port}`);
     await fastify.listen({ port, host });
+    
+    // Clear timeout on successful startup
+    clearTimeout(startupTimeout);
+    console.log(`✅ Server successfully started on ${host}:${port}`);
   } catch (err) {
     fastify.log.fatal({ err }, 'Server startup failed');
     process.exit(1);
